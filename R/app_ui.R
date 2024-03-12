@@ -21,6 +21,10 @@ app_ui <- function(request) {
                     tabName = 'main',
                     icon = icon('house'),
                     startExpanded = TRUE),
+                  shinydashboard::menuItem('Documentação',
+                                           tabName = 'documentacao',
+                                           icon = icon('book'),
+                                           startExpanded = TRUE),
                   shinydashboard::menuItem(
                     "SIVEP-GRIPE" ,
                     tabname = "sivep",
@@ -92,21 +96,21 @@ app_ui <- function(request) {
                                         indicador = 'incom',
                                         descricao = desc_incom,
                                         vars = vars_incom_sinasc,
-                                        estados = sort(unique(Sinasc_incom$ESTADO)),
+                                        estados = sort(unique(dados_oobr_qualidados_SINASC_Incompletude_1996_2022$ESTADO)),
                             selecionadas = c('RACA','ESCOLARIDADE')),
               mod_SINASC_ui(id = "SINASC_implausibilidade",
                                         tabname = "implau_sinasc",
                                         indicador = 'implau',
                                         descricao = desc_implau,
                                         vars = vars_implau_sinasc,
-                                        estados = sort(unique(Sinasc_implau$ESTADO)),
+                                        estados = sort(unique(dados_oobr_qualidados_SINASC_Implausibilidade_1996_2022$ESTADO)),
                             selecionadas = c('RACA','SEXO')),
               mod_SINASC_ui(id = "SINASC_inconsistencia",
                             tabname = "incons_sinasc",
                             indicador = 'incon',
                             descricao = desc_incon,
                             vars = unname(var_incon_sinasc),
-                            estados = sort(unique(Sinasc_incon$ESTADO)),
+                            estados = sort(unique(dados_oobr_qualidados_SINASC_Inconsistencia_1996_2022$ESTADO)),
                             selecionadas = unname(var_incon_sinasc)[c(1,2)]),
               mod_SINASC_ui(id = "SIM_incompletude",
                             tabname = "incom_sim",
@@ -114,7 +118,7 @@ app_ui <- function(request) {
                             SIM = TRUE,
                             descricao = desc_incom,
                             vars = unname(vars_incom_sim),
-                            estados = sort(unique(SIM_Incom$ESTADO)),
+                            estados = sort(unique(dados_oobr_qualidados_SIM_Incompletude_1996_2022$ESTADO)),
                             selecionadas =c('RACA','ESCOLARIDADE') ),
               mod_SINASC_ui(id = "SIM_implausibilidade",
                             tabname = "implau_sim",
@@ -122,7 +126,7 @@ app_ui <- function(request) {
                             SIM = TRUE,
                             descricao = desc_implau,
                             vars = unname(vars_implau_sim),
-                            estados = sort(unique(SIM_Implau$ESTADO)),
+                            estados = sort(unique(dados_oobr_qualidados_SIM_Implausibilidade_1996_2022$ESTADO)),
                             selecionadas = c('RACA','ESCOLARIDADE')),
               mod_SINASC_ui(id = "SIM_inconsistencia",
                             tabname = "incon_sim",
@@ -130,7 +134,7 @@ app_ui <- function(request) {
                             SIM = TRUE,
                             descricao = desc_incon,
                             vars = unname(vars_incon_sim),
-                            estados = sort(unique(SIM_Incon$ESTADO)),
+                            estados = sort(unique(dados_oobr_qualidados_SIM_Inconsistencia_1996_2022$ESTADO)),
                             selecionadas = unname(vars_incon_sim)[c(1,2)]),
               mod_Dicionario_ui("dicsivep","dic-sivep"),
               mod_Dicionario_ui("dicsinasc","dic-sinasc"),
@@ -140,7 +144,81 @@ app_ui <- function(request) {
                                       fluidRow(
                                       shinydashboard::box(width = 12,
                                       shiny::includeMarkdown('inicio.md')
-                                      )))
+                                      ))),
+
+              shinydashboard:: tabItem(
+                tabName = "documentacao",
+                h1(strong("Fontes")),
+                h2(strong(
+                  "Dados SIVEP-GRIPE"
+                )),
+                (
+                  "Utilizamos os registros das notificações de Síndrome Respiratória Aguda Grave (SRAG) na base SIVEP Gripe (Sistema de Informação da Vigilância Epidemiológica da Gripe).
+       "
+                ),
+                br(),
+                br(),
+                (
+                  "A atualização desta base é disponibilizada pelo Ministério da Saúde pelo portal"
+                ),
+                a(" Open Data SUS.", href = "https://opendatasus.saude.gov.br/organization/ministerio-da-saude"),
+                br(),
+                br(),
+                (
+                  "A última atualização foi realizada em 20/09/2023, aqui constam as bases do SIVEP-Gripe de 2009 à 2023."
+                ),
+                br(),
+                br(),
+                p(
+                  "São disponibilizados aqui os indicadores de qualidade para os casos definidos como gestante (qualquer trimestre gestacional ou
+        idade gestacional ignorada) ou puérpera."
+                ),
+                p(
+                  "Para a identificação de gestante, há a variável CS_GESTANT. Essa variável assume os valores: 1-1º Trimestre; 2-2º Trimestre; 3-3º Trimestre; 4-Idade Gestacional Ignorada; 5-Não; 6-Não se aplica; 9-Ignorado.
+        Consideramos aqui como gestante se CS_GESTANT for 1 ou 2 ou 3 ou 4."
+                ),
+                p(
+                  "Para a identificação de puérpera, há a variável PUERPERA, com 1-sim e 2-não.
+        Consideramos como puérpera os casos que PUERPERA=1 e CS_GESTANT=5 ou PUERPERA=1 e CS_GESTANT=9."
+                ),
+                br(),
+                br(),
+                h2(strong('Sistema de Informações sobre Nascidos Vivos (SINASC).')),
+                (
+                  'O SINASC é gerenciado pelo Ministério da Saúde em parceria com as Secretarias Estaduais e Municipais de Saúde. Seu objetivo principal é subsidiar a formulação, implementação e avaliação de políticas públicas relacionadas à saúde materno-infantil.'
+                ),
+                br(),
+                br(),
+                ('São disponibilizados aqui os indicadores de qualidade para os casos definidos como gestante (qualquer trimestre gestacional ou
+        idade gestacional ignorada) ou puérpera.'),
+                br(),
+                br(),
+                ('Os dados são obtidos via API da PCDas, em https://pcdas.icict.fiocruz.br/, uma plataforma de ciência de dados aplicada a saúde proporcionada pela fundação Fiocruz'),
+                br(),
+                br(),
+                ('Os dados aqui apresentados possuem atualização em 20/09/2023 para dados do SINASC de 2009 a 2021, com os dados preliminares de 2022.'),
+                br(),
+                br(),
+                h2(strong('Sistema de Informação sobre Mortalidade (SIM) .')),
+                (
+                  'O Sistema de Informação Sobre Mortalidade (SIM), desenvolvido pelo Ministério da Saúde em 1975, é resultado da integração de mais de quarenta modelos de instrumentos utilizados ao longo dos anos para coletar dados sobre mortalidade no país.'
+                ),
+                br(),
+                br(),
+                ('São disponibilizados aqui os indicadores de qualidade para os casos definidos como gestante (qualquer trimestre gestacional ou
+        idade gestacional ignorada) ou puérpera.'),
+                br(),
+                br(),
+                ('Os dados são obtidos via API da PCDas, em https://pcdas.icict.fiocruz.br/, uma plataforma de ciência de dados aplicada a saúde proporcionada pela fundação Fiocruz'),
+                br(),
+                br(),
+                ('Os dados aqui apresentados possuem atualização em  20/09/2023 para dados do SIM de 2009 a 2021, com os dados preliminares de 2022.'),
+                br(),
+                br(),
+                actionButton("generate", "Gerar pdf da documentação"),
+                uiOutput("pdfview"),
+                br()
+              )
             )
                   )
                 )

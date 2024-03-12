@@ -43,8 +43,8 @@ mod_SINASC_ui <- function(id, tabname, indicador, descricao, vars,selecionadas,e
                             ns('filtro_tempo'),
                             'Selecione a janela de tempo:',
                             min = 1996,
-                            max = 2020,
-                            value = c(2000,2018),
+                            max = 2022,
+                            value = c(2000,2023),
                             round = T,
                             sep=''),
                           #LOCALIDADE
@@ -254,7 +254,7 @@ mod_SINASC_server <- function(id,indicador,SIM = FALSE){
 
   output$Grafico <- plotly::renderPlotly({
     dados <- data_filtrada()
-
+    dados$ANO <- dados$ANO %>%  as.factor()
     # Definindo a altura do gráfico
     h_plot <- input$vars_select %>% unique() %>% length()
     h_plot <- h_plot * 200
