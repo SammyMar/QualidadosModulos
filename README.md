@@ -32,7 +32,7 @@ Os dados foram obtidos pelo DATASUS do Ministério da Saúde, consistindo em tr�
  - O Sistema de Informação sobre mortalidade (SIM), consistindo em um grande banco anual composto por todos os registros das declarações de óbitos a partir do ano de 1996;
 
  - O Sistema de Informações sobre Nascidos Vivos (SINASC) foi implantado oficialmente a partir de 1990, com o objetivo de coletar dados sobre os nascimentos ocorridos em todo o território nacional e fornecer informações sobre natalidade para todos os níveis do Sistema de Saúde.
-
+Os dados atualmente, por serem bases grandes, estão disponíveis em https://www.synapse.org/#!Synapse:syn52537949.
 
 # **Como citar o OOBr Qualidados:**
 
